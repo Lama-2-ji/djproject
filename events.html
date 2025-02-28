@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Event
+{%load static%}
+ {% endblock %}
+
+ {% block content %}
+ <h2 class="text-center">Events</h2>
+<div class="container">
+      {% for i in eve %}
+
+        <div class-"card text-center" style="width: 18rem; display:inline-block;margin: 20px;">
+                <img src="{{i.image.url}}" class="card-img-top" alt="..." height="150px" width="200px">
+                <div class="card-body">
+                <h5 class="card-title">{{i.name}}</h5>
+                <p class="card-text">{{i.desc}}</p>
+              </div>
+            </div>
+            {% endfor %}
+         <div class-"card text-center" style="width: 18rem; display:inline-block;margin: 20px;">
+                <img src="{% static 'image/d.jpg' %}" class="card-img-top" alt="..." height="150px" width="200px">
+                <div class="card-body">
+                <h5 class="card-title">Event1</h5>
+                <p class="card-text">join with us</p>
+              </div>
+            </div>
+        <div class-"card text-center" style="width: 18rem; display:inline-block;margin: 20px;">
+                <img src="{% static 'image/oo.jpg' %}" class="card-img-top" alt="..." height="150px" width="200px">
+                <div class="card-body">
+                <h5 class="card-title">Event1</h5>
+                <p class="card-text">join with us</p>
+              </div> 
+            
+</div>
+
+ {% endblock %}

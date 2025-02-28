@@ -1,0 +1,66 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat</title>
+</head>
+<body>
+    <h1>Live Chat</h1>
+    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send">
+</body>
+</html>
+
+    <!-- Paste the JavaScript code here -->
+    <script>
+        // WebSocket URL (matches the route in Django's routing.py)
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/room_name/'
+        );
+
+        // Handle incoming messages
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);  // Parse the JSON message
+            const message = data.message;    // Extract the message content
+
+            // Append the message to the chat log
+            const chatLog = document.querySelector('#chat-log');
+            chatLog.value += message + '\n';  // Add the message to the textarea
+            chatLog.scrollTop = chatLog.scrollHeight;  // Auto-scroll to the bottom
+        };
+
+        // Handle connection errors
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        // Send message when Enter is pressed
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // Enter key
+                sendMessage();
+            }
+        };
+
+        // Send message when the "Send" button is clicked
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            sendMessage();
+        };
+
+        // Function to send a message
+        function sendMessage() {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;  // Get the message from the input field
+
+            // Send the message to the server
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+
+            messageInputDom.value = '';  // Clear the input field
+        }
+    </script>
+</body>
+</html>
